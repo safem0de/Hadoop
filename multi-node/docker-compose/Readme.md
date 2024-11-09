@@ -72,9 +72,13 @@ apt-get install wget -y
 wget --version
 ```
 
-### remove olds ources.list
+### remove old sources.list
 ```bash
-rm /etc/apt/sources.list
+cat /etc/apt/sources.list
+
+-- backup old sources.list
+mv  /etc/apt/sources.list /etc/apt/sources.list.bak 
+rm  /etc/apt/sources.list
 ```
 
 ### fixed apt update (create new sources.list)
@@ -106,4 +110,25 @@ hdfs dfs -mkdir /user/root
 ### Check the directory
 ```bash
 hdfs dfs -ls /user/root
+```
+
+### Local Hive SetUp reference
+```bash
+https://medium.com/@nsidana123/what-is-apache-hadoop-a4d182b1fbd3
+```
+
+### 
+
+### Add user
+```bash
+useradd -m -s /bin/bash hadoop
+```
+### Switch user
+```bash
+su - hadoop
+```
+
+### Start SSH
+```bash
+service ssh start
 ```
