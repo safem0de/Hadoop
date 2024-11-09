@@ -7,8 +7,10 @@ services:
     ports:
       - "9870:9870"  # NameNode Web UI
       - "9000:9000"  # HDFS port
+      - "22:22"      # SSH port
+      - "10000:10000"  # Hive port
     environment:
-      - CLUSTER_NAME=test
+      - CLUSTER_NAME=Hadoop_safem0de
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
     volumes:
       - namenode_data:/hadoop/dfs/name

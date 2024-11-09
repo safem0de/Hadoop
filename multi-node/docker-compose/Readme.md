@@ -1,6 +1,8 @@
-### Docker Compose
+### Docker Compose up
 ```bash
 docker-compose up -d
+or 
+docker-compose -f D:\\Hadoop\\hadoop-docker\\docker-compose.yml up
 ```
 
 ### Namenode (web ui)
@@ -21,9 +23,31 @@ http://localhost:9865
 https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html
 ```
 
+### Docker container
+```bash
+docker ps -a
+```
+
+### Docker images
+```bash
+docker images
+```
+
 ### Docker volume
 ```bash
 docker volume ls
+```
+
+### Docker networks
+```bash
+docker network list
+```
+
+### Docker Compose up
+```bash
+docker-compose up
+or 
+docker-compose -f D:\\Hadoop\\hadoop-docker\\docker-compose.yml up
 ```
 
 ### Start local
@@ -62,12 +86,6 @@ echo "deb http://archive.debian.org/debian-security stretch/updates main contrib
 ### Disable signature validation for the old release
 ```bash
 echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99ignore-release-date
-```
-
-### Firewall allowed (no need)
-```bash
-docker exec -it namenode iptables -A INPUT -p tcp --dport 9870 -j ACCEPT
-docker exec -it namenode iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
 ```
 
 ### Check the HDFS filesystem status
