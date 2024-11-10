@@ -1,0 +1,63 @@
+# Use Ubuntu as the base image
+FROM ubuntu:20.04
+
+# Switch to root user to install packages
+USER root
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    openjdk-8-jdk \
+    wget \
+    ssh \
+    rsync \
+    curl \
+    bash \
+    iputils-ping \
+    && apt-get clean;
+
+# Set environment variables for Hadoop
+ENV HADOOP_VERSION 3.4.0
+ENV HADOOP_HOME /opt/hadoop
+ENV PATH $HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+
+# Download and install Hadoop
+RUN if [ ! -d "$HADOOP_HOME" ]; then \
+      wget https://downloads.apache.org/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz -P /opt && \
+      tar -xvzf /opt/hadoop-$HADOOP_VERSION.tar.gz -C /opt && \
+      ln -s /opt/hadoop-$HADOOP_VERSION $HADOOP_HOME && \
+      rm -f /opt/hadoop-$HADOOP_VERSION.tar.gz; \
+    fi
+
+
+# Configure Hadoop (basic configurations)
+COPY config/core-site.xml $HADOOP_HOME/etc/hadoop/
+COPY config/hdfs-site.xml $HADOOP_HOME/etc/hadoop/
+COPY config/mapred-site.xml $HADOOP_HOME/etc/hadoop/
+COPY config/yarn-site.xml $HADOOP_HOME/etc/hadoop/
+
+# Install SSH
+RUN apt-get update && apt-get install -y openssh-server && \
+    mkdir -p /var/run/sshd
+
+# Setup SSH for Hadoop (passwordless SSH)
+RUN [ ! -f ~/.ssh/id_rsa ] && ssh-keygen -t rsa -b 2048 -N '' -f ~/.ssh/id_rsa || true \
+    && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+    && chmod 0600 ~/.ssh/authorized_keys
+
+
+# Add the hdfs user
+RUN id -u hdfs &>/dev/null || useradd -m hdfs && \
+    [ -d /hadoop/dfs/name ] || mkdir -p /hadoop/dfs/name && \
+    [ -d /hadoop/dfs/data ] || mkdir -p /hadoop/dfs/data && \
+    chown -R hdfs:hdfs /hadoop/dfs
+
+
+# Switch to the hdfs user
+USER hdfs
+
+# Expose ports for Hadoop Web UI
+EXPOSE 50070 9000
+
+# Start Hadoop daemons
+CMD ["/bin/bash", "-c", "start-dfs.sh"]

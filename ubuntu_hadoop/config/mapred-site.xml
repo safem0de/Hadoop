@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- MapReduce framework configuration -->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <!-- JobTracker hostname, for Hadoop 2.x, the JobTracker is replaced by the ResourceManager -->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>localhost:10020</value>
+    </property>
+
+    <!-- Specify the location of the job history log directory -->
+    <property>
+        <name>mapreduce.jobhistory.jobhistory-dir</name>
+        <value>file:///tmp/hadoop-yarn/staging/history/done</value>
+    </property>
+
+    <!-- Set the default compression codec for map/reduce operations -->
+    <property>
+        <name>mapreduce.map.output.compress</name>
+        <value>false</value>
+    </property>
+
+    <!-- Set the map/reduce output compression codec -->
+    <property>
+        <name>mapreduce.output.fileoutputformat.compress</name>
+        <value>false</value>
+    </property>
+
+    <!-- The number of map tasks for each job -->
+    <property>
+        <name>mapreduce.job.maps</name>
+        <value>1</value>
+    </property>
+
+    <!-- The number of reduce tasks for each job -->
+    <property>
+        <name>mapreduce.job.reduces</name>
+        <value>1</value>
+    </property>
+
+    <!-- Timeout for MapReduce tasks -->
+    <property>
+        <name>mapreduce.task.timeout</name>
+        <value>600000</value> <!-- 10 minutes -->
+    </property>
+</configuration>

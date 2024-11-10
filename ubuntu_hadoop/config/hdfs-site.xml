@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Specify the HDFS storage directory for NameNode -->
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:///hadoop/dfs/name</value>
+    </property>
+
+    <!-- Specify the HDFS storage directory for DataNode -->
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///hadoop/dfs/data</value>
+    </property>
+
+    <!-- Set the default replication factor for HDFS -->
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+
+    <!-- Set the block size for HDFS -->
+    <property>
+        <name>dfs.blocksize</name>
+        <value>134217728</value>  <!-- 128MB -->
+    </property>
+
+    <!-- Set the default filesystem (it should be HDFS) -->
+    <property>
+        <name>dfs.defaultFS</name>
+        <value>hdfs://namenode:9000</value>
+    </property>
+
+    <!-- Enable HDFS High Availability for active-passive configuration (optional) -->
+    <!-- <property>
+        <name>dfs.nameservices</name>
+        <value>mycluster</value>
+    </property> -->
+
+    <!-- Set the secondary NameNode URI -->
+    <property>
+        <name>dfs.secondary.http.address</name>
+        <value>namenode:50090</value>
+    </property>
+
+    <!-- Configure safe mode threshold -->
+    <property>
+        <name>dfs.safemode.threshold.pct</name>
+        <value>0.999f</value>
+    </property>
+
+    <!-- Configure HDFS heartbeat interval -->
+    <property>
+        <name>dfs.heartbeat.interval</name>
+        <value>3</value>  <!-- Interval in seconds -->
+    </property>
+</configuration>

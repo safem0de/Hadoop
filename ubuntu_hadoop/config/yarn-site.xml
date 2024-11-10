@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- ResourceManager configuration -->
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>resourcemanager:8032</value>
+    </property>
+
+    <!-- Web UI address for ResourceManager -->
+    <property>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>resourcemanager:8088</value>
+    </property>
+
+    <!-- The ResourceManager Scheduler address -->
+    <property>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>resourcemanager:8030</value>
+    </property>
+
+    <!-- The ResourceManager ResourceManager Admin UI address -->
+    <property>
+        <name>yarn.resourcemanager.admin.address</name>
+        <value>resourcemanager:8090</value>
+    </property>
+
+    <!-- NodeManager configuration -->
+    <property>
+        <name>yarn.nodemanager.address</name>
+        <value>nodemanager:8041</value>
+    </property>
+
+    <property>
+        <name>yarn.nodemanager.webapp.address</name>
+        <value>nodemanager:8042</value>
+    </property>
+
+    <!-- Set the minimum and maximum resources per node for YARN -->
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>4096</value> <!-- 4GB of memory per node -->
+    </property>
+
+    <property>
+        <name>yarn.nodemanager.resource.cpu-vcores</name>
+        <value>2</value> <!-- 2 CPU cores per node -->
+    </property>
+
+    <!-- YARN Container management configuration -->
+    <property>
+        <name>yarn.scheduler.minimum-allocation-mb</name>
+        <value>1024</value> <!-- Minimum memory allocation for each container -->
+    </property>
+
+    <property>
+        <name>yarn.scheduler.maximum-allocation-mb</name>
+        <value>8192</value> <!-- Maximum memory allocation for each container -->
+    </property>
+
+    <!-- Set YARN to use the default scheduler -->
+    <property>
+        <name>yarn.scheduler.class</name>
+        <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+    </property>
+
+    <!-- Set the yarn container-executor class -->
+    <property>
+        <name>yarn.container-executor.class</name>
+        <value>org.apache.hadoop.yarn.server.nodemanager.containermanager.launcher.DefaultContainerExecutor</value>
+    </property>
+</configuration>

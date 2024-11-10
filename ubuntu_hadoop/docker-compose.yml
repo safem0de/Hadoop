@@ -1,0 +1,60 @@
+version: '3'
+services:
+  namenode:
+    image: ubuntu:20.04
+    container_name: namenode
+    hostname: namenode
+    environment:
+      - HDFS_NAMENODE_USER=hdfs
+      - HDFS_DATANODE_USER=hdfs
+      - HDFS_SECONDARYNAMENODE_USER=hdfs
+    build:
+      context: .
+      dockerfile: Dockerfile.namenode
+    ports:
+      - "50070:50070"   # NameNode Web UI
+      - "9000:9000"     # HDFS
+    volumes:
+      - /tmp/hadoop/dfs/name:/hadoop/dfs/name
+    networks:
+      - hadoopnet
+
+  datanode:
+    image: ubuntu:20.04
+    container_name: datanode
+    hostname: datanode
+    environment:
+      - HDFS_NAMENODE_USER=hdfs
+      - HDFS_DATANODE_USER=hdfs
+      - HDFS_SECONDARYNAMENODE_USER=hdfs
+    build:
+      context: .
+      dockerfile: Dockerfile.datanode
+    ports:
+      - "50075:50075"   # DataNode Web UI
+    volumes:
+      - /tmp/hadoop/dfs/data:/hadoop/dfs/data
+    networks:
+      - hadoopnet
+
+  datanode2:
+    image: ubuntu:20.04
+    container_name: datanode2
+    hostname: datanode2
+    environment:
+      - HDFS_NAMENODE_USER=hdfs
+      - HDFS_DATANODE_USER=hdfs
+      - HDFS_SECONDARYNAMENODE_USER=hdfs
+    build:
+      context: .
+      dockerfile: Dockerfile.datanode
+    ports:
+      - "50076:50075"   # DataNode Web UI
+    volumes:
+      - /tmp/hadoop/dfs/data2:/hadoop/dfs/data
+    networks:
+      - hadoopnet
+
+networks:
+  hadoopnet:
+    driver: bridge
