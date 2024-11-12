@@ -66,6 +66,46 @@ You can add the following entries to each node's /etc/hosts file if they are mis
 ```
 Docker Compose usually manages this, but you can add it manually if needed for debugging.
 
+```bash
 /opt/hive/conf/hive-site.xml
+```
 
-$HIVE_HOME/bin/hive --service hiveserver2 &
+```bash
+root@master:/# hive version
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Beeline version 4.0.1 by Apache Hive
+beeline> 
+```
+
+### ตัวอย่างการลบ slf4j-reload4j
+```bash
+rm /opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar
+```
+
+### add connection for hive 
+```bash
+!connect jdbc:hive2://localhost:10000/default --verbose=true
+```
+
+วิธีที่ 1: ใช้คำสั่ง netstat
+```bash
+sudo netstat -tuln
+```
+* t แสดงเฉพาะการเชื่อมต่อ TCP
+* u แสดงเฉพาะการเชื่อมต่อ UDP
+* l แสดงเฉพาะพอร์ตที่กำลังฟังอยู่ (Listening)
+* n แสดงหมายเลขพอร์ตในรูปแบบตัวเลข (ไม่แปลงเป็นชื่อ)
+
+
+|Proto | Recv-Q | Send-Q | Local Address | Foreign Address| State | PID/Program name |
+|:-----|:-------|:-------|:--------------|:---------------|:------|:-----------------|
+|tcp   |     0  |        | 0 0.0.0.0:22  |  0.0.0.0:*     |LISTEN | 1348/sshd        |
+|tcp6  |     0  |        | 0 :::8080     |  :::*          |LISTEN | 912/java         |
+|tcp6  |     0  |        | 0 :::10000    |  :::*          |LISTEN | 1410/hiveserver2 |
+
+นี่จะแสดงรายการพอร์ตที่กำลังฟังอยู่และโปรแกรมที่กำลังใช้พอร์ตนั้น
+

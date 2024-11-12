@@ -20,19 +20,26 @@ services:
     ports:
       - "9870:9870"    # HDFS Web UI
       - "8088:8088"    # YARN Resource Manager
-      - "10000:10000"  # Hive Thrift Server
+      - "10000:10000"  # HiveServer2 Thrift port
+      - "10002:10002"  # Optional Hive Web Interface or additional port
     command: >
       sh -c "service ssh start &&
-             if [ -f $HADOOP_HOME/sbin/start-dfs.sh ]; then
-               if [ ! -d /tmp/hadoop-root/dfs/name ]; then
-                 $HADOOP_HOME/bin/hdfs namenode -format;
-               fi &&
-               $HADOOP_HOME/sbin/start-dfs.sh &&
-               $HADOOP_HOME/sbin/start-yarn.sh;
-             else
-               echo 'Hadoop start-dfs.sh not found in $HADOOP_HOME/sbin';
-             fi &&
-             tail -f /dev/null"
+            if [ -f $HADOOP_HOME/sbin/start-dfs.sh ]; then
+              if [ ! -d /tmp/hadoop-root/dfs/name ]; then
+                $HADOOP_HOME/bin/hdfs namenode -format;
+              fi &&
+              $HADOOP_HOME/sbin/start-dfs.sh &&
+              $HADOOP_HOME/sbin/start-yarn.sh &&
+              # สร้าง directories สำหรับ Hive
+              $HADOOP_HOME/bin/hdfs dfs -mkdir -p /tmp &&
+              $HADOOP_HOME/bin/hdfs dfs -chmod g+w /tmp &&
+              $HADOOP_HOME/bin/hdfs dfs -mkdir -p /user/hive/warehouse &&
+              $HADOOP_HOME/bin/hdfs dfs -chmod g+w /user/hive/warehouse
+            else
+              echo 'Hadoop start-dfs.sh not found in $HADOOP_HOME/sbin';
+            fi &&
+            tail -f /dev/null"
+
 
   worker1:
     build: .

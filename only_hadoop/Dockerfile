@@ -35,13 +35,23 @@ COPY core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml
 COPY hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
 COPY mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml
 COPY yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
-COPY hadoop-env.sh $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+# COPY hadoop-env.sh $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 
 # Configure Hive
 COPY hive-site.xml $HIVE_HOME/conf/hive-site.xml
 
 # Format HDFS namenode
+RUN echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 RUN $HADOOP_HOME/bin/hdfs namenode -format
+
+# # สร้าง directories ที่จำเป็นสำหรับ Hive
+# RUN $HADOOP_HOME/bin/hdfs dfs -mkdir -p /tmp && \
+#     $HADOOP_HOME/bin/hdfs dfs -chmod g+w /tmp && \
+#     $HADOOP_HOME/bin/hdfs dfs -mkdir -p /user/hive/warehouse && \
+#     $HADOOP_HOME/bin/hdfs dfs -chmod g+w /user/hive/warehouse
+
+# # เปิดพอร์ตสำหรับ Hive
+# EXPOSE 10000 10002
 
 # Start SSH service
 CMD ["/usr/sbin/sshd", "-D"]
