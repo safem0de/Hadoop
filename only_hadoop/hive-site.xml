@@ -30,6 +30,7 @@
         <value>10000</value>
         <description>Port number for HiveServer2 Thrift interface.</description>
     </property>
+    
     <property>
         <name>hive.server2.transport.mode</name>
         <value>binary</value>
